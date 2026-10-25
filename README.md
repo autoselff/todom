@@ -64,9 +64,3 @@ For production use `npm run build && npm start`.
 ## Stack
 
 [Next.js](https://nextjs.org/) 16 · [React](https://react.dev/) 19 · TypeScript · [Prisma](https://www.prisma.io/) · PostgreSQL 16
-
-
----
-
-> **Note on how this was built.** todom was developed with the assistance of a
-> large language model (LLM).
