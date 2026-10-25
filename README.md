@@ -1,4 +1,4 @@
-# todom
+<h1><img src="logo.svg" alt="todom" height="44" /></h1>
 
 Minimal self-hosted Kanban board for planning and tracking tasks. Next.js, React, TypeScript and PostgreSQL, with a soft gruvbox-inspired light and dark theme.
 
