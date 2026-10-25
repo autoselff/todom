@@ -13,6 +13,7 @@ import {
   updateColumn as updateColumnAction,
   type Board,
 } from "@/lib/kanban";
+import ThemeToggle from "../theme-toggle";
 import AddColumn from "./add-column";
 import Column from "./column";
 
@@ -188,7 +189,8 @@ export default function KanbanBoard({ initial }: { initial: Board }) {
   return (
     <>
       <div className="hero boardBar">
-        <a className="back" href="/">Boards</a>
+        <a className="brand" href="/">todom</a>
+        <span className="crumbSep" aria-hidden="true">/</span>
         <input
           className="boardTitle"
           value={title}
@@ -203,6 +205,7 @@ export default function KanbanBoard({ initial }: { initial: Board }) {
             }
           }}
         />
+        <ThemeToggle />
       </div>
       <div
         className="board"
