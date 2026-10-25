@@ -43,6 +43,11 @@ Then open [http://localhost:3000](http://localhost:3000).
 | `make down`  | Stop the database                    |
 | `make db`    | Start only the database              |
 | `make setup` | First-time setup                     |
+| `make demo`  | Build the offline demo               |
+
+### Offline demo
+
+`make demo` builds `demo/dist/index.html`: a single file with the same UI, no server or database. Data lives in the browser's `localStorage`, so it works from `file://`, any static host or an `<iframe>`.
 
 ### Without make
 
@@ -59,3 +64,10 @@ For production use `npm run build && npm start`.
 ## Stack
 
 [Next.js](https://nextjs.org/) 16 · [React](https://react.dev/) 19 · TypeScript · [Prisma](https://www.prisma.io/) · PostgreSQL 16
+
+
+---
+
+> **Note on how this was built.** Owen was developed with the assistance of a
+> large language model (LLM). Its code, comments, and this documentation were
+> written collaboratively with AI, then reviewed before committing.

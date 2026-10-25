@@ -1,7 +1,7 @@
 NAME=todom-db
 IMAGE=postgres:16
 
-.PHONY: up down setup db
+.PHONY: up down setup db demo
 
 db:
 	docker start $(NAME) 2>/dev/null || docker run -d --name $(NAME) \
@@ -22,3 +22,6 @@ setup: db
 	npm install
 	npx prisma generate
 	npx prisma db push
+
+demo:
+	cd demo && npm install && npm run build
