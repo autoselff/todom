@@ -68,6 +68,5 @@ For production use `npm run build && npm start`.
 
 ---
 
-> **Note on how this was built.** Owen was developed with the assistance of a
-> large language model (LLM). Its code, comments, and this documentation were
-> written collaboratively with AI, then reviewed before committing.
+> **Note on how this was built.** todom was developed with the assistance of a
+> large language model (LLM).
