@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useConfirm } from "./confirm";
 import {
   createBoard as createBoardAction,
   deleteBoard as deleteBoardAction,
@@ -13,6 +14,7 @@ export default function Boards({
 }) {
   const [boards, setBoards] = useState(initial);
   const [title, setTitle] = useState("");
+  const [confirm, confirmDialog] = useConfirm();
 
   async function add() {
     const next = title.trim();
@@ -22,10 +24,15 @@ export default function Boards({
     setBoards((list) => [...list, { id, title: next }]);
   }
 
-  function remove(id: string) {
-    if (!confirm("Delete this board?")) return;
-    setBoards((list) => list.filter((b) => b.id !== id));
-    deleteBoardAction(id);
+  async function remove(board: { id: string; title: string }) {
+    const ok = await confirm({
+      title: "Delete board?",
+      message: `“${board.title}” and all its cards will be permanently deleted.`,
+      action: "Delete",
+    });
+    if (!ok) return;
+    setBoards((list) => list.filter((b) => b.id !== board.id));
+    deleteBoardAction(board.id);
   }
 
   return (
@@ -37,7 +44,7 @@ export default function Boards({
             type="button"
             className="iconBtn"
             aria-label={`Delete ${board.title}`}
-            onClick={() => remove(board.id)}
+            onClick={() => remove(board)}
           >
             ×
           </button>
@@ -58,6 +65,7 @@ export default function Boards({
         />
         <button type="submit">Add board</button>
       </form>
+      {confirmDialog}
     </div>
   );
 }

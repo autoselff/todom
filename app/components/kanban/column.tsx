@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Column as ColumnType } from "@/lib/kanban";
+import { useConfirm } from "../confirm";
 import AddCard from "./add-card";
 import Card from "./card";
 
@@ -49,6 +50,7 @@ export default function Column({
   onDragEnd: () => void;
 }) {
   const [title, setTitle] = useState(column.title);
+  const [confirm, confirmDialog] = useConfirm();
 
   useEffect(() => setTitle(column.title), [column.title]);
 
@@ -112,8 +114,13 @@ export default function Column({
           type="button"
           className="iconBtn"
           aria-label="Delete column"
-          onClick={() => {
-            if (confirm("Delete this column?")) onDelete();
+          onClick={async () => {
+            const ok = await confirm({
+              title: "Delete column?",
+              message: `“${column.title}” and its cards will be permanently deleted.`,
+              action: "Delete",
+            });
+            if (ok) onDelete();
           }}
         >
           ×
@@ -138,6 +145,7 @@ export default function Column({
       </div>
 
       <AddCard onAdd={onAddCard} />
+      {confirmDialog}
     </section>
   );
 }

@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Card as CardType } from "@/lib/kanban";
+import { useConfirm } from "../confirm";
 
 const TONES = ["orange", "yellow", "green", "aqua", "blue", "purple", "red"];
 
-// Badges store a tone name; older cards may still hold a raw hex color.
 function badgeCss(badge: string) {
   return badge.startsWith("#") ? badge : `var(--tone-${badge})`;
 }
@@ -30,6 +30,7 @@ export default function Card({
   const [title, setTitle] = useState(card.title);
   const [description, setDescription] = useState(card.description);
   const [badge, setBadge] = useState(card.badgeColor);
+  const [confirm, confirmDialog] = useConfirm();
 
   function close() {
     setTitle(card.title);
@@ -125,8 +126,13 @@ export default function Card({
               <button
                 type="button"
                 className="deleteCard"
-                onClick={() => {
-                  if (confirm("Delete this card?")) onDelete();
+                onClick={async () => {
+                  const ok = await confirm({
+                    title: "Delete card?",
+                    message: `“${card.title}” will be permanently deleted.`,
+                    action: "Delete",
+                  });
+                  if (ok) onDelete();
                 }}
               >
                 Delete
@@ -140,6 +146,7 @@ export default function Card({
         </div>,
         document.body,
       ) : null}
+      {confirmDialog}
     </article>
   );
 }
