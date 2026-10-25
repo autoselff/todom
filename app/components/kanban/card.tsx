@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Card as CardType } from "@/lib/kanban";
+
+const TONES = ["orange", "yellow", "green", "aqua", "blue", "purple", "red"];
+
+// Badges store a tone name; older cards may still hold a raw hex color.
+function badgeCss(badge: string) {
+  return badge.startsWith("#") ? badge : `var(--tone-${badge})`;
+}
 
 export default function Card({
   card,
@@ -21,14 +29,12 @@ export default function Card({
   const [editing, setEditing] = useState(false);
   const [title, setTitle] = useState(card.title);
   const [description, setDescription] = useState(card.description);
-  const [badgeColor, setBadgeColor] = useState(card.badgeColor ?? "#2dd4bf");
-  const [badgeEnabled, setBadgeEnabled] = useState(card.badgeColor !== null);
+  const [badge, setBadge] = useState(card.badgeColor);
 
   function close() {
     setTitle(card.title);
     setDescription(card.description);
-    setBadgeColor(card.badgeColor ?? "#2dd4bf");
-    setBadgeEnabled(card.badgeColor !== null);
+    setBadge(card.badgeColor);
     setEditing(false);
   }
 
@@ -46,7 +52,7 @@ export default function Card({
       className={`card${dragging ? " dragging" : ""}`}
       style={
         card.badgeColor
-          ? { borderLeft: `5px solid ${card.badgeColor}` }
+          ? { borderLeft: `4px solid ${badgeCss(card.badgeColor)}` }
           : undefined
       }
       draggable={!editing}
@@ -63,7 +69,7 @@ export default function Card({
         {card.description ? <p>{card.description}</p> : null}
       </button>
 
-      {editing ? (
+      {editing ? createPortal(
         <div className="modalBackdrop" onClick={close}>
           <form
             className="modal"
@@ -75,7 +81,7 @@ export default function Card({
               onUpdate({
                 title: nextTitle,
                 description: description.trim(),
-                badgeColor: badgeEnabled ? badgeColor : null,
+                badgeColor: badge,
               });
               setEditing(false);
             }}
@@ -92,27 +98,30 @@ export default function Card({
               aria-label="Card description"
               rows={5}
             />
-            <label className="badgePicker">
-              <input
-                type="checkbox"
-                checked={badgeEnabled}
-                onChange={(e) => setBadgeEnabled(e.target.checked)}
+            <div className="badgePicker" role="radiogroup" aria-label="Badge color">
+              <span>Badge</span>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={badge === null}
+                aria-label="No badge"
+                className="swatch none"
+                onClick={() => setBadge(null)}
               />
-              <span className="checkboxMark" aria-hidden="true" />
-              Badge
-              <input
-                type="color"
-                value={badgeColor}
-                disabled={!badgeEnabled}
-                onChange={(e) => setBadgeColor(e.target.value)}
-                aria-label="Badge color"
-              />
-            </label>
+              {TONES.map((tone) => (
+                <button
+                  key={tone}
+                  type="button"
+                  role="radio"
+                  aria-checked={badge === tone}
+                  aria-label={tone}
+                  className="swatch"
+                  style={{ background: badgeCss(tone) }}
+                  onClick={() => setBadge(tone)}
+                />
+              ))}
+            </div>
             <div className="cardActions">
-              <button type="submit">Save</button>
-              <button type="button" onClick={close}>
-                Cancel
-              </button>
               <button
                 type="button"
                 className="deleteCard"
@@ -122,9 +131,14 @@ export default function Card({
               >
                 Delete
               </button>
+              <button type="button" onClick={close}>
+                Cancel
+              </button>
+              <button type="submit">Save</button>
             </div>
           </form>
-        </div>
+        </div>,
+        document.body,
       ) : null}
     </article>
   );
