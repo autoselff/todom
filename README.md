@@ -3,16 +3,16 @@
 Minimal self-hosted Kanban board for planning and tracking tasks. Next.js, React, TypeScript and PostgreSQL, with a soft gruvbox-inspired light and dark theme.
 
 ### Boards
+<img width="3840" height="2160" alt="Screenshot_20261025_172008" src="https://github.com/user-attachments/assets/fc0c84e7-d4dc-4aa2-b9b2-ef20ced5862b" />
 
-<img width="3840" height="2108" alt="List of boards" src="https://github.com/user-attachments/assets/d1f87348-c1df-43a2-9499-2292883484e6" />
 
 ### Board
+<img width="3840" height="2160" alt="Screenshot_20261025_172029" src="https://github.com/user-attachments/assets/59094239-5748-414e-a13d-7ad408cba65d" />
 
-<img width="3840" height="2108" alt="Board with To do, Doing and Done columns" src="https://github.com/user-attachments/assets/9a56928b-beb1-43da-9e89-8ec234fd46fd" />
 
 ### Editing a card
+<img width="3840" height="2160" alt="Screenshot_20261025_172053" src="https://github.com/user-attachments/assets/93458ea7-b7d5-4eb5-b4b5-cc4baafff98a" />
 
-<img width="3840" height="2109" alt="Card editor with title, description and badge colors" src="https://github.com/user-attachments/assets/ea2a3e6d-2787-4ad9-ba27-fc6387f05705" />
 
 ## Features
 
