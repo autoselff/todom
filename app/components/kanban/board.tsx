@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useState } from "react";
+import Link from "next/link";
 import {
   addCard as addCardAction,
   addColumn as addColumnAction,
@@ -189,7 +190,9 @@ export default function KanbanBoard({ initial }: { initial: Board }) {
   return (
     <>
       <div className="hero boardBar">
-        <a className="brand" href="/">todom</a>
+        <Link className="brand" href="/">
+          <span>todom</span>
+        </Link>
         <span className="crumbSep" aria-hidden="true">/</span>
         <input
           className="boardTitle"

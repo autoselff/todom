@@ -1,4 +1,3 @@
-/* Light: neutral warm grays with muted gruvbox tones */
 :root {
   color-scheme: light;
   --bg: #ecebe7;
@@ -29,6 +28,9 @@
   --key-edge: rgba(50, 48, 47, 0.16);
   --well: #f1efeb;
   --well-shadow: inset 0 1.5px 2px rgba(50, 48, 47, 0.1);
+  --well-deep: #e9e6e0;
+  --well-rim: rgba(50, 48, 47, 0.3);
+  --well-shadow-deep: inset 0 2.5px 5px rgba(50, 48, 47, 0.2);
   --shadow-sm: 0 1px 2px rgba(50, 48, 47, 0.05);
   --shadow: 0 1px 2px rgba(50, 48, 47, 0.04), 0 6px 20px rgba(50, 48, 47, 0.07);
   --shadow-lg: 0 24px 64px rgba(50, 48, 47, 0.2);
@@ -45,7 +47,6 @@
     Consolas, monospace;
 }
 
-/* Dark: gruvbox hard background, softened foreground and tones */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
@@ -73,10 +74,13 @@
     --primary: #e3dccb;
     --primary-hover: color-mix(in srgb, #e3dccb 85%, #1c1b1a);
     --on-primary: #1c1b1a;
-  --primary-edge: #a39a87;
-  --key-edge: rgba(0, 0, 0, 0.55);
-  --well: #1f1e1d;
-  --well-shadow: inset 0 1.5px 3px rgba(0, 0, 0, 0.5);
+    --primary-edge: #a39a87;
+    --key-edge: rgba(0, 0, 0, 0.55);
+    --well: #1f1e1d;
+    --well-shadow: inset 0 1.5px 3px rgba(0, 0, 0, 0.5);
+    --well-deep: #1d1c1b;
+    --well-rim: rgba(0, 0, 0, 0.6);
+    --well-shadow-deep: inset 0 2px 5px rgba(0, 0, 0, 0.6);
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.25);
     --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
@@ -116,6 +120,9 @@
   --key-edge: rgba(0, 0, 0, 0.55);
   --well: #1f1e1d;
   --well-shadow: inset 0 1.5px 3px rgba(0, 0, 0, 0.5);
+  --well-deep: #1d1c1b;
+  --well-rim: rgba(0, 0, 0, 0.6);
+  --well-shadow-deep: inset 0 2px 5px rgba(0, 0, 0, 0.6);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.25);
   --shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.55);
@@ -149,7 +156,6 @@ a {
   background: var(--accent-soft);
 }
 
-/* Each column and board tile cycles through a muted tone */
 .board > .column:nth-of-type(7n + 1),
 .boardGrid > .boardTile:nth-of-type(7n + 1) {
   --tone: var(--tone-orange);
@@ -421,7 +427,6 @@ textarea {
   height: 2.25rem;
 }
 
-/* Wordmark: identical on the boards list and inside a board */
 .brand {
   display: inline-flex;
   align-items: center;
@@ -435,29 +440,48 @@ textarea {
   letter-spacing: -0.03em;
   line-height: 1.3;
   color: var(--fg);
-  transition: transform 0.3s var(--spring), box-shadow 0.3s var(--spring),
-    background-color 0.15s ease;
+  --text-edge: color-mix(in srgb, var(--fg) 25%, transparent);
+}
+
+.brand span {
+  display: block;
+  text-shadow: 0 0 0 var(--text-edge);
+  transition: transform 0.3s var(--spring), text-shadow 0.3s var(--spring);
+}
+
+.brand:hover span {
+  transform: translateY(-1px);
+  text-shadow: 0 1.5px 0 var(--text-edge);
+}
+
+.brand:active span {
+  transform: translateY(0.5px);
+  text-shadow: 0 0 0 var(--text-edge);
+  transition-duration: 0.1s;
+  transition-timing-function: var(--press);
 }
 
 .brand::before {
+  --mark-edge: color-mix(in srgb, var(--accent) 60%, #000);
   content: "";
   width: 0.55rem;
   height: 0.55rem;
   border-radius: 3px;
   background: var(--accent);
+  box-shadow: 0 1.5px 0 var(--mark-edge);
+  transition: transform 0.3s var(--spring), box-shadow 0.3s var(--spring);
 }
 
-.brand:hover {
-  background: var(--raised);
-  border-color: var(--border);
-  box-shadow: 0 3px 0 var(--edge), var(--shadow-lift-sm);
-  transform: translateY(-1px);
+.brand:hover::before {
+  transform: translateY(-1.5px);
+  box-shadow: 0 3px 0 var(--mark-edge);
 }
 
-.brand:active {
-  transform: translateY(1px) scale(0.98);
-  box-shadow: none;
+.brand:active::before {
+  transform: translateY(1px);
+  box-shadow: 0 0 0 var(--mark-edge);
   transition-duration: 0.1s;
+  transition-timing-function: var(--press);
 }
 
 .crumbSep {
@@ -475,16 +499,12 @@ textarea {
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.3;
-  color: var(--muted);
+  color: var(--fg);
   background: transparent;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   padding: 0.3rem 0.5rem;
   box-shadow: none;
-}
-
-input.boardTitle {
-  color: var(--fg);
 }
 
 input.boardTitle:hover,
@@ -499,10 +519,13 @@ textarea:focus-visible,
 input.boardTitle:focus-visible,
 input.columnTitle:focus-visible {
   outline: none;
-  background: var(--raised);
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft), var(--shadow-lift-sm);
-  transform: translateY(-1px);
+  background: var(--well-deep);
+  border-color: var(--border-strong);
+  border-top-color: var(--well-rim);
+  box-shadow: var(--well-shadow-deep);
+  caret-color: var(--accent);
+  transition-duration: 0.12s;
+  transition-timing-function: var(--press);
 }
 
 .themeToggle {
@@ -740,6 +763,36 @@ input.columnTitle:focus-visible {
   animation: popIn 0.18s cubic-bezier(0.2, 0.9, 0.3, 1.2);
 }
 
+.modal.confirm {
+  width: min(22rem, 100%);
+  gap: 0.4rem;
+  padding: 1.35rem 1.35rem 1.1rem;
+}
+
+.confirm h2 {
+  font-size: 1rem;
+}
+
+.confirm p {
+  margin: 0 0 0.8rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.confirmActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+button.danger {
+  --edge: color-mix(in srgb, var(--danger) 55%, var(--raised));
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 14%, var(--raised));
+  border-color: transparent;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -858,7 +911,6 @@ input.columnTitle:focus-visible {
   }
 }
 
-/* Pressed keys sit flush, whatever their hover state */
 .themeToggle:active,
 .grip:active,
 .iconBtn:active,

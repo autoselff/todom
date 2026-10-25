@@ -1,4 +1,5 @@
 import Boards from "./components/boards";
+import Link from "next/link";
 import ThemeToggle from "./components/theme-toggle";
 import { listBoards } from "@/lib/kanban";
 
@@ -10,7 +11,9 @@ export default async function Home() {
   return (
     <main className="shell boardShell" suppressHydrationWarning>
       <div className="hero boardBar">
-        <a className="brand" href="/">todom</a>
+        <Link className="brand" href="/">
+          <span>todom</span>
+        </Link>
         <span className="crumbSep" aria-hidden="true">/</span>
         <h1 className="boardTitle">Boards</h1>
         <ThemeToggle />

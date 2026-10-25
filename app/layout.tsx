@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   title: "todom",
 };
 
-// Runs before paint so the stored or system theme applies without a flash.
 const themeScript = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.dataset.theme=t}catch(e){}`;
 
 export default function RootLayout({
