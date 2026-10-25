@@ -27,11 +27,12 @@ type Over =
   | { type: "column"; index: number };
 
 function midIndex(client: number, els: Iterable<Element>, axis: "x" | "y") {
-  const i = [...els].findIndex((el) => {
+  const list = [...els];
+  const i = list.findIndex((el) => {
     const r = el.getBoundingClientRect();
     return client < (axis === "x" ? r.left + r.width / 2 : r.top + r.height / 2);
   });
-  return i === -1 ? els.length : i;
+  return i === -1 ? list.length : i;
 }
 
 export default function KanbanBoard({ initial }: { initial: Board }) {

@@ -21,7 +21,7 @@ export default function Card({
 }: {
   card: CardType;
   dragging: boolean;
-  onUpdate: (data: { title: string; description: string }) => void;
+  onUpdate: (data: { title: string; description: string; badgeColor: string | null }) => void;
   onDelete: () => void;
   onDragStart: () => void;
   onDragEnd: () => void;

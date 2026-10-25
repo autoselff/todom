@@ -37,6 +37,7 @@ function mapBoard(
         id: number;
         title: string;
         description: string;
+        badgeColor: string | null;
         columnId: number;
         columnOrder: number;
       }[];
